@@ -1,9 +1,14 @@
-import { Map, FullscreenControl, GlobeControl, LogoControl } from 'maplibre-gl';
+import { Map, 
+  FullscreenControl, 
+  GlobeControl, 
+  LogoControl,
+ } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { addKotaLayer, addPulauLayer } from './layers/vector';
 import { addSpongebobImage } from './layers/raster';
 import { addAttribution } from './controls/basicControls';
 import { LogoAFAControl } from './controls/customLogoControls';
+import { addKotaPopup } from './popups/layerPopups';
 
 const mapElement = document.createElement('div');
 mapElement.id = 'map';
@@ -23,6 +28,10 @@ map.on("load", () => {
   addPulauLayer(map);
   addSpongebobImage(map);
 
+});
+
+map.on("click", "titik-kota", (event) => {
+  addKotaPopup(map, event);
 });
 
 // Controls setting
