@@ -1,5 +1,6 @@
 import { Map } from 'maplibre-gl';
 import naturalEarthData from "./data/ne.geojson?url";
+import areaData from "./data/area.geojson?url";
 
 const mapElement = document.createElement ('div');
 mapElement.id = 'map';
@@ -10,7 +11,7 @@ const map = new Map ({
     container: 'map',
     style: 'https://demotiles.maplibre.org/globe.json',
     center: [106.89 , -6.19],
-    zoom: 11
+    zoom: 1
 })
 
 // const data = {
@@ -36,7 +37,7 @@ map.on("load", () => {
 
   map.addSource('kota', {
     type: 'geojson',
-    data: "https://geoserver.mapid.io/layers_new/get_layer?api_key=e39817e8ae824eac8fe466f38a2e0420&layer_id=6a3006fabccdad7e1b82d757&project_id=6a2ffb666684a940bdb05bb8"
+    data: naturalEarthData 
   });
 
   map.addLayer({
@@ -48,6 +49,21 @@ map.on("load", () => {
       "circle-color": "blue",
       "circle-stroke-width": 1,
       "circle-stroke-color": "black"
+    }
+  });
+
+  map.addSource('pulau', {
+    type: 'geojson',
+    data: areaData 
+  });
+
+  map.addLayer({
+    id: "area-pulau",
+    type: "fill",
+    source: "pulau",
+    paint: {
+      "fill-color": "orange",
+      "fill-outline-color": "black",
     }
   });
 
