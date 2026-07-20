@@ -8,7 +8,9 @@ import { addKotaLayer, addPulauLayer } from './layers/vector';
 import { addSpongebobImage } from './layers/raster';
 import { addAttribution } from './controls/basicControls';
 import { LogoAFAControl } from './controls/customLogoControls';
-import { addKotaPopup } from './popups/layerPopups';
+import { addKotaPopup, addPulauPopup } from './popups/layerPopups';
+import { storeAreaGeometry } from './engine/areaTools';
+import { storeBufferGeometry } from './engine/bufferTools';
 
 const mapElement = document.createElement('div');
 mapElement.id = 'map';
@@ -20,7 +22,8 @@ const map = new Map({
   style: 'https://demotiles.maplibre.org/globe.json',
   center: [106.83, -6.19],
   zoom: 1,
-  attributionControl: false
+  attributionControl: false,
+  cooperativeGestures: true
 });
 
 map.on("load", () => {
@@ -30,8 +33,15 @@ map.on("load", () => {
 
 });
 
-map.on("click", "titik-kota", (event) => {
-  addKotaPopup(map, event);
+map.on("click", "titik-kota", function(event){
+  // addKotaPopup(map, event);
+  storeBufferGeometry(map, event)
+});
+
+map.doubleClickZoom.disable();
+
+map.on("click", "area-pulau", function(event) {
+  storeAreaGeometry(event);
 });
 
 // Controls setting
